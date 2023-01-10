@@ -1,10 +1,11 @@
 package com.defatov.todolist_spring_usage.model;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 
-@Entity @Table(name = "tasks")
+@Entity
+@Table(name = "tasks")
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Task {

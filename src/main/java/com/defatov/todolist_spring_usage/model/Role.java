@@ -1,12 +1,14 @@
 package com.defatov.todolist_spring_usage.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+
 import java.util.List;
 
-@Entity @Table(name = "roles")
+@Entity
+@Table(name = "roles")
 @Getter @Setter @Builder
 @AllArgsConstructor @NoArgsConstructor
 public class Role {

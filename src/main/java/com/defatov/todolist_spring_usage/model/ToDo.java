@@ -1,13 +1,14 @@
 package com.defatov.todolist_spring_usage.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity @Table(name = "todos")
+@Entity
+@Table(name = "todos")
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class ToDo {

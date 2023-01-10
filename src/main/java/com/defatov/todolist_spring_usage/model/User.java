@@ -1,13 +1,14 @@
 package com.defatov.todolist_spring_usage.model;
 
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import java.util.List;
 
-@Entity @Table(name = "users")
+@Entity
+@Table(name = "users")
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class User {
