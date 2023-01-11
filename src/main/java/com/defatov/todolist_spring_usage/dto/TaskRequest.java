@@ -1,7 +1,6 @@
 package com.defatov.todolist_spring_usage.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,18 +9,12 @@ import lombok.NoArgsConstructor;
 @Data @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequest {
+public class TaskRequest {
 
     @NotBlank
-    private String firstName;
+    private String name;
 
     @NotBlank
-    private String lastName;
-
-    @NotBlank
-    private String password;
-
-    @NotBlank
-    private String email;
+    private String priority;
 
 }
