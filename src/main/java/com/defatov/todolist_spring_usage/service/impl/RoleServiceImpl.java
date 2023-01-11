@@ -36,6 +36,11 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    public Role readByName(String name) {
+        return roleRepository.readByName(name);
+    }
+
+    @Override
     public Role update(Role role) {
         if (role != null) {
             readById(role.getId());
