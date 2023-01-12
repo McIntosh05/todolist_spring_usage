@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/todos")
+@RequestMapping("api/users/{user_id}")
 public class ToDoController {
 
     private final ToDoService toDoService;
@@ -25,6 +25,8 @@ public class ToDoController {
 
     private final ToDoDtoFactory toDoDtoFactory;
 
+    private static final String TODO_ID = "/todos/{todo_id}";
+
     @Autowired
     public ToDoController(ToDoService toDoService, UserService userService, ToDoDtoFactory toDoDtoFactory) {
         this.toDoService = toDoService;
@@ -32,7 +34,7 @@ public class ToDoController {
         this.toDoDtoFactory = toDoDtoFactory;
     }
 
-    @GetMapping(path = "users/{user_id}")
+    @GetMapping(path = "/todos")
     public ResponseEntity<List<ToDoDto>> getAllTodos(@PathVariable long user_id) {
 
         List<ToDoDto> todos = toDoService.getAll().stream()
@@ -44,8 +46,11 @@ public class ToDoController {
                 : new ResponseEntity<>(todos, HttpStatus.OK);
     }
 
-    @GetMapping(path = "{todo_id}")
-    public ResponseEntity<ToDoDto> readTodo(@PathVariable long todo_id) {
+    @GetMapping(path = TODO_ID)
+    public ResponseEntity<ToDoDto> getTodo(
+            @PathVariable long todo_id,
+            @PathVariable long user_id
+    ) {
 
         ToDo toDo = toDoService.readById(todo_id);
 
@@ -53,7 +58,7 @@ public class ToDoController {
 
     }
 
-    @PutMapping(path = "/users/{user_id}")
+    @PutMapping
     public ResponseEntity<ToDoDto> create(@PathVariable long user_id, @RequestBody ToDoRequest toDoRequest) {
 
         ToDo toDo = toDoDtoFactory.makeToDoEntity(toDoRequest);
@@ -66,7 +71,7 @@ public class ToDoController {
 
     }
 
-    @PatchMapping(path = "/{todo_id}/users/{user_id}")
+    @PatchMapping(path = TODO_ID)
     public ResponseEntity<ToDoDto> update(
             @PathVariable long todo_id,
             @PathVariable long user_id,
@@ -79,16 +84,17 @@ public class ToDoController {
             ToDo newToDo = toDoDtoFactory.makeToDoEntity(toDoRequest);
             newToDo.setId(todo_id);
             newToDo.setOwner(userService.readById(user_id));
-            return new ResponseEntity<>(toDoDtoFactory.makeToDoDto(toDoService.update(newToDo)), HttpStatus.OK);
+            toDoService.update(newToDo);
+            return new ResponseEntity<>(toDoDtoFactory.makeToDoDto(newToDo), HttpStatus.OK);
         }
 
         else {
-            throw new NullEntityReferenceException("User cannot be null");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
-
-    @DeleteMapping(path = "{todo_id}/users/{user_id}")
+//
+    @DeleteMapping(path = TODO_ID)
     public void delete(
             @PathVariable long todo_id,
             @PathVariable long user_id

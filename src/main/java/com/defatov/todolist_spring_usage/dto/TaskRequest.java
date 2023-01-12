@@ -17,4 +17,7 @@ public class TaskRequest {
     @NotBlank
     private String priority;
 
+    @NotBlank
+    private String state;
+
 }

@@ -34,10 +34,10 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public ToDo update(ToDo role) {
-        if (role != null) {
-            readById(role.getId());
-            return todoRepository.save(role);
+    public ToDo update(ToDo toDo) {
+        if (toDo != null) {
+            readById(toDo.getId());
+            return todoRepository.save(toDo);
         }
         throw new NullEntityReferenceException("ToDo cannot be 'null'");
     }

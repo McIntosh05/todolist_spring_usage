@@ -34,10 +34,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task update(Task role) {
-        if (role != null) {
-            readById(role.getId());
-            return taskRepository.save(role);
+    public Task update(Task task) {
+        if (task != null) {
+            readById(task.getId());
+            return taskRepository.save(task);
         }
         throw new NullEntityReferenceException("Task cannot be 'null'");
     }

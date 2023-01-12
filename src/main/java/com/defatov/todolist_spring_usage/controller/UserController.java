@@ -79,11 +79,12 @@ public class UserController {
         if(user != null) {
             User newUser = userDtoFactory.makeUserEntity(userRequest);
             newUser.setId(user_id);
-            return new ResponseEntity<>(userDtoFactory.makeUserDto(userService.update(newUser)), HttpStatus.OK);
+            userService.update(newUser);
+            return new ResponseEntity<>(userDtoFactory.makeUserDto(newUser), HttpStatus.OK);
         }
 
         else {
-            throw new NullEntityReferenceException("User cannot be null");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
     }
