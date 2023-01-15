@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public RoleServiceImpl(RoleRepository roleRepository) {
@@ -30,7 +30,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role readById(long id) {
+    public Role readById(String id) {
         return roleRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Role with id " + id + " not found"));
     }
@@ -50,7 +50,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String id) {
         roleRepository.delete(readById(id));
     }
 

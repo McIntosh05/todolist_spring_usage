@@ -5,6 +5,7 @@ import com.defatov.todolist_spring_usage.model.ToDo;
 import com.defatov.todolist_spring_usage.repository.ToDoRepository;
 import com.defatov.todolist_spring_usage.service.ToDoService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,8 +14,9 @@ import java.util.List;
 @Service
 public class ToDoServiceImpl implements ToDoService {
 
-    private ToDoRepository todoRepository;
+    private final ToDoRepository todoRepository;
 
+    @Autowired
     public ToDoServiceImpl(ToDoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
@@ -28,7 +30,7 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public ToDo readById(long id) {
+    public ToDo readById(String id) {
         return todoRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("ToDo with id " + id + " not found"));
     }
@@ -43,7 +45,7 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String id) {
         todoRepository.delete(readById(id));
     }
 
@@ -54,7 +56,7 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public List<ToDo> getByUserId(long userId) {
+    public List<ToDo> getByUserId(String userId) {
         List<ToDo> todos = todoRepository.getByUserId(userId);
         return todos.isEmpty() ? new ArrayList<>() : todos;
     }

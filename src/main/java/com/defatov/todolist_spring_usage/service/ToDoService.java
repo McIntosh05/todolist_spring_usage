@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface ToDoService {
     ToDo create(ToDo todo);
-    ToDo readById(long id);
+    ToDo readById(String id);
     ToDo update(ToDo todo);
-    void delete(long id);
+    void delete(String id);
 
     List<ToDo> getAll();
-    List<ToDo> getByUserId(long userId);
+    List<ToDo> getByUserId(String userId);
 }

@@ -5,6 +5,7 @@ import com.defatov.todolist_spring_usage.model.State;
 import com.defatov.todolist_spring_usage.repository.StateRepository;
 import com.defatov.todolist_spring_usage.service.StateService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,8 +15,9 @@ import java.util.Optional;
 @Service
 public class StateServiceImpl implements StateService {
 
-    private StateRepository stateRepository;
+    private final StateRepository stateRepository;
 
+    @Autowired
     public StateServiceImpl(StateRepository stateRepository) {
         this.stateRepository = stateRepository;
     }
@@ -29,7 +31,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
-    public State readById(long id) {
+    public State readById(String id) {
         return stateRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("State with id " + id + " not found"));
     }
@@ -44,7 +46,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String id) {
         stateRepository.delete(readById(id));
     }
 

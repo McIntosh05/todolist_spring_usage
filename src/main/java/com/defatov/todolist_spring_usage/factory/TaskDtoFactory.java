@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskDtoFactory {
 
-    private StateService stateService;
+    private final StateService stateService;
 
     @Autowired
     public TaskDtoFactory(StateService stateService) {
@@ -23,6 +23,7 @@ public class TaskDtoFactory {
         return TaskDto.builder()
                 .name(task.getName())
                 .priority(task.getPriority().name())
+                .todo_name(task.getTodo().getTitle())
                 .state(task.getState().getName())
                 .build();
 

@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping(path = "{user_id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable long user_id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable String user_id) {
         return new ResponseEntity<>(
                 userDtoFactory.makeUserDto(userService.readById(user_id)),
                 HttpStatus.OK
@@ -72,7 +72,7 @@ public class UserController {
     }
 
     @PatchMapping(path = "{user_id}")
-    public ResponseEntity<UserDto> update(@PathVariable long user_id, @RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserDto> update(@PathVariable String user_id, @RequestBody UserRequest userRequest) {
 
         User user = userService.readById(user_id);
 
@@ -90,7 +90,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "{user_id}")
-    public void delete(@PathVariable long user_id) {
+    public void delete(@PathVariable String user_id) {
         userService.delete(user_id);
     }
 }

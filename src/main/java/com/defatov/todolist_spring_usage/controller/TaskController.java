@@ -39,12 +39,12 @@ public class TaskController {
 
     @GetMapping
     public ResponseEntity<List<TaskDto>> getAll(
-            @PathVariable long user_id,
-            @PathVariable long todo_id
+            @PathVariable String user_id,
+            @PathVariable String todo_id
     ) {
 
         List<TaskDto> tasks = taskService.getAll().stream()
-                .filter(task -> task.getTodo().getId() == todo_id)
+                .filter(task -> task.getTodo().getId().equals(todo_id))
                 .map(taskDtoFactory::makeTaskDto)
                 .collect(Collectors.toList());
 
@@ -57,9 +57,9 @@ public class TaskController {
 
     @GetMapping(path = TASK_ID)
     public ResponseEntity<TaskDto> getTask(
-            @PathVariable long user_id,
-            @PathVariable long todo_id,
-            @PathVariable long task_id
+            @PathVariable String user_id,
+            @PathVariable String todo_id,
+            @PathVariable String task_id
     ) {
 
         return new ResponseEntity<>(
@@ -71,8 +71,8 @@ public class TaskController {
 
     @PutMapping
     public ResponseEntity<TaskDto> create(
-            @PathVariable long user_id,
-            @PathVariable long todo_id,
+            @PathVariable String user_id,
+            @PathVariable String todo_id,
             @RequestBody TaskRequest taskRequest
     ) {
 
@@ -89,9 +89,9 @@ public class TaskController {
 
     @PatchMapping(path = TASK_ID)
     public ResponseEntity<TaskDto> update(
-            @PathVariable long user_id,
-            @PathVariable long todo_id,
-            @PathVariable long task_id,
+            @PathVariable String user_id,
+            @PathVariable String todo_id,
+            @PathVariable String task_id,
             @RequestBody TaskRequest taskRequest
     ) {
 
@@ -113,9 +113,9 @@ public class TaskController {
 
     @DeleteMapping(path = TASK_ID)
     public void delete(
-            @PathVariable long user_id,
-            @PathVariable long todo_id,
-            @PathVariable long task_id
+            @PathVariable String user_id,
+            @PathVariable String todo_id,
+            @PathVariable String task_id
     ) {
 
         taskService.delete(task_id);

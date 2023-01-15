@@ -17,7 +17,7 @@ public class TaskDto {
     private String priority;
 
     @NotNull
-    private String toDoName;
+    private String todo_name;
 
     @NotNull
     private String state;

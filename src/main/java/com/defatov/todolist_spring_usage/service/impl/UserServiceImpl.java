@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User readById(long id) {
+    public User readById(String id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User with id " + id + " not found"));
     }
@@ -45,8 +45,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String id) {
         userRepository.delete(readById(id));
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

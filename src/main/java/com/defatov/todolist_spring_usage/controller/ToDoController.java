@@ -35,10 +35,10 @@ public class ToDoController {
     }
 
     @GetMapping(path = "/todos")
-    public ResponseEntity<List<ToDoDto>> getAllTodos(@PathVariable long user_id) {
+    public ResponseEntity<List<ToDoDto>> getAllTodos(@PathVariable String user_id) {
 
         List<ToDoDto> todos = toDoService.getAll().stream()
-                .filter(todo -> todo.getOwner().getId() == user_id)
+                .filter(todo -> todo.getOwner().getId().equals(user_id))
                 .map(toDoDtoFactory::makeToDoDto)
                 .collect(Collectors.toList());
 
@@ -48,8 +48,8 @@ public class ToDoController {
 
     @GetMapping(path = TODO_ID)
     public ResponseEntity<ToDoDto> getTodo(
-            @PathVariable long todo_id,
-            @PathVariable long user_id
+            @PathVariable String todo_id,
+            @PathVariable String user_id
     ) {
 
         ToDo toDo = toDoService.readById(todo_id);
@@ -59,7 +59,7 @@ public class ToDoController {
     }
 
     @PutMapping
-    public ResponseEntity<ToDoDto> create(@PathVariable long user_id, @RequestBody ToDoRequest toDoRequest) {
+    public ResponseEntity<ToDoDto> create(@PathVariable String user_id, @RequestBody ToDoRequest toDoRequest) {
 
         ToDo toDo = toDoDtoFactory.makeToDoEntity(toDoRequest);
         toDo.setOwner(userService.readById(user_id));
@@ -73,8 +73,8 @@ public class ToDoController {
 
     @PatchMapping(path = TODO_ID)
     public ResponseEntity<ToDoDto> update(
-            @PathVariable long todo_id,
-            @PathVariable long user_id,
+            @PathVariable String todo_id,
+            @PathVariable String user_id,
             @RequestBody ToDoRequest toDoRequest
     ) {
 
@@ -96,8 +96,8 @@ public class ToDoController {
 //
     @DeleteMapping(path = TODO_ID)
     public void delete(
-            @PathVariable long todo_id,
-            @PathVariable long user_id
+            @PathVariable String todo_id,
+            @PathVariable String user_id
     ) {
 
         toDoService.delete(todo_id);

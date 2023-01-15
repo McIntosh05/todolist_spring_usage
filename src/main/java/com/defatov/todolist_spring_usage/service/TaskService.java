@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface TaskService {
     Task create(Task task);
-    Task readById(long id);
+    Task readById(String id);
     Task update(Task task);
-    void delete(long id);
+    void delete(String id);
 
     List<Task> getAll();
-    List<Task> getByTodoId(long todoId);
+    List<Task> getByTodoId(String todoId);
 }

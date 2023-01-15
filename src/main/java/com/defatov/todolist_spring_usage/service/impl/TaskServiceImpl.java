@@ -5,6 +5,7 @@ import com.defatov.todolist_spring_usage.model.Task;
 import com.defatov.todolist_spring_usage.repository.TaskRepository;
 import com.defatov.todolist_spring_usage.service.TaskService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,8 +14,9 @@ import java.util.List;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
+    @Autowired
     public TaskServiceImpl(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
@@ -28,7 +30,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task readById(long id) {
+    public Task readById(String id) {
         return taskRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Task with id " + id + " not found"));
     }
@@ -43,7 +45,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(String id) {
         taskRepository.delete(readById(id));
     }
 
@@ -54,7 +56,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> getByTodoId(long todoId) {
+    public List<Task> getByTodoId(String todoId) {
         List<Task> tasks = taskRepository.getByTodoId(todoId);
         return tasks.isEmpty() ? new ArrayList<>() : tasks;
     }
