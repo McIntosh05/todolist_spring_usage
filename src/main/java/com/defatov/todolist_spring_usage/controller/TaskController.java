@@ -7,6 +7,7 @@ import com.defatov.todolist_spring_usage.model.Task;
 import com.defatov.todolist_spring_usage.service.StateService;
 import com.defatov.todolist_spring_usage.service.TaskService;
 import com.defatov.todolist_spring_usage.service.ToDoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users/{user_id}/todos/{todo_id}/tasks")
 public class TaskController {
@@ -25,16 +27,13 @@ public class TaskController {
 
     private final ToDoService toDoService;
 
-    private final StateService stateService;
-
     private final static String TASK_ID = "{task_id}";
 
     @Autowired
-    public TaskController(TaskService taskService, TaskDtoFactory taskDtoFactory, ToDoService toDoService, StateService stateService) {
+    public TaskController(TaskService taskService, TaskDtoFactory taskDtoFactory, ToDoService toDoService) {
         this.taskService = taskService;
         this.taskDtoFactory = taskDtoFactory;
         this.toDoService = toDoService;
-        this.stateService = stateService;
     }
 
     @GetMapping
@@ -42,6 +41,8 @@ public class TaskController {
             @PathVariable String user_id,
             @PathVariable String todo_id
     ) {
+
+        log.info("Searching all tasks in db by todo id " + todo_id);
 
         List<TaskDto> tasks = taskService.getAll().stream()
                 .filter(task -> task.getTodo().getId().equals(todo_id))
@@ -62,6 +63,8 @@ public class TaskController {
             @PathVariable String task_id
     ) {
 
+        log.info("Getting task by id " + task_id);
+
         return new ResponseEntity<>(
                 taskDtoFactory.makeTaskDto(taskService.readById(task_id)),
                 HttpStatus.OK
@@ -75,6 +78,7 @@ public class TaskController {
             @PathVariable String todo_id,
             @RequestBody TaskRequest taskRequest
     ) {
+        log.info("Creating new task with name" + taskRequest.getName());
 
         Task task = taskDtoFactory.makeTaskEntity(taskRequest);
         task.setTodo(toDoService.readById(todo_id));
@@ -98,6 +102,7 @@ public class TaskController {
         Task task = taskService.readById(task_id);
 
         if(task != null) {
+            log.info("Updating task with id " + task_id);
             Task newTask = taskDtoFactory.makeTaskEntity(taskRequest);
             newTask.setId(task_id);
             newTask.setTodo(toDoService.readById(todo_id));
@@ -119,6 +124,8 @@ public class TaskController {
     ) {
 
         taskService.delete(task_id);
+
+        log.info("Task with id " + task_id + " was deleted");
 
     }
 

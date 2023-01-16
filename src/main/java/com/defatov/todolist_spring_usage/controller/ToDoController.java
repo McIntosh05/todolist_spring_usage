@@ -7,6 +7,7 @@ import com.defatov.todolist_spring_usage.factory.ToDoDtoFactory;
 import com.defatov.todolist_spring_usage.model.ToDo;
 import com.defatov.todolist_spring_usage.service.ToDoService;
 import com.defatov.todolist_spring_usage.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("api/users/{user_id}")
 public class ToDoController {
@@ -37,10 +39,13 @@ public class ToDoController {
     @GetMapping(path = "/todos")
     public ResponseEntity<List<ToDoDto>> getAllTodos(@PathVariable String user_id) {
 
+        log.info("Searching all todos in db by user id " + user_id);
+
         List<ToDoDto> todos = toDoService.getAll().stream()
                 .filter(todo -> todo.getOwner().getId().equals(user_id))
                 .map(toDoDtoFactory::makeToDoDto)
                 .collect(Collectors.toList());
+
 
         return todos.isEmpty() ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(todos, HttpStatus.OK);
@@ -52,6 +57,8 @@ public class ToDoController {
             @PathVariable String user_id
     ) {
 
+        log.info("Getting todo by id " + todo_id);
+
         ToDo toDo = toDoService.readById(todo_id);
 
         return new ResponseEntity<>(toDoDtoFactory.makeToDoDto(toDo), HttpStatus.OK);
@@ -60,6 +67,8 @@ public class ToDoController {
 
     @PutMapping
     public ResponseEntity<ToDoDto> create(@PathVariable String user_id, @RequestBody ToDoRequest toDoRequest) {
+
+        log.info("Creating new todo with name" + toDoRequest.getTitle());
 
         ToDo toDo = toDoDtoFactory.makeToDoEntity(toDoRequest);
         toDo.setOwner(userService.readById(user_id));
@@ -81,6 +90,7 @@ public class ToDoController {
         ToDo toDo = toDoService.readById(todo_id);
 
         if(toDo != null) {
+            log.info("Updating todo with id " + todo_id);
             ToDo newToDo = toDoDtoFactory.makeToDoEntity(toDoRequest);
             newToDo.setId(todo_id);
             newToDo.setOwner(userService.readById(user_id));
@@ -101,6 +111,8 @@ public class ToDoController {
     ) {
 
         toDoService.delete(todo_id);
+
+        log.info("Todo with id " + todo_id + " was deleted");
 
     }
 
