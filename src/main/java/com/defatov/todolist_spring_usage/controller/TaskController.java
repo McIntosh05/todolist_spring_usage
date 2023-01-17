@@ -7,6 +7,8 @@ import com.defatov.todolist_spring_usage.model.Task;
 import com.defatov.todolist_spring_usage.service.StateService;
 import com.defatov.todolist_spring_usage.service.TaskService;
 import com.defatov.todolist_spring_usage.service.ToDoService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/api/users/{user_id}/todos/{todo_id}/tasks")
+@AllArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
@@ -29,12 +32,6 @@ public class TaskController {
 
     private final static String TASK_ID = "{task_id}";
 
-    @Autowired
-    public TaskController(TaskService taskService, TaskDtoFactory taskDtoFactory, ToDoService toDoService) {
-        this.taskService = taskService;
-        this.taskDtoFactory = taskDtoFactory;
-        this.toDoService = toDoService;
-    }
 
     @GetMapping
     public ResponseEntity<List<TaskDto>> getAll(

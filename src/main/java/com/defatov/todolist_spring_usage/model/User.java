@@ -2,20 +2,21 @@ package com.defatov.todolist_spring_usage.model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Document(collection = "users")
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     @Id
     private String id;
@@ -41,6 +42,10 @@ public class User {
 
     private List<ToDo> otherTodos;
 
+    private boolean isEnabled;
+
+    private boolean isLocked;
+
     @Override
     public String toString() {
         return "User{" +
@@ -50,5 +55,36 @@ public class User {
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
+        return Collections.singletonList(authority);
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !isLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
     }
 }

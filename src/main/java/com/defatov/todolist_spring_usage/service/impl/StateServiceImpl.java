@@ -52,11 +52,8 @@ public class StateServiceImpl implements StateService {
 
     @Override
     public State getByName(String name) {
-        Optional<State> optional = Optional.ofNullable(stateRepository.findByName(name));
-        if (optional.isPresent()) {
-            return optional.get();
-        }
-        throw new EntityNotFoundException("State with name '" + name + "' not found");
+        return stateRepository.findByName(name)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("State with name '%s' not found", name)));
     }
 
     @Override

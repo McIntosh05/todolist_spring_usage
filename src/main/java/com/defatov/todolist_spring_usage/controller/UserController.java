@@ -7,6 +7,7 @@ import com.defatov.todolist_spring_usage.factory.UserDtoFactory;
 import com.defatov.todolist_spring_usage.model.User;
 import com.defatov.todolist_spring_usage.service.RoleService;
 import com.defatov.todolist_spring_usage.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("api/users")
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
@@ -27,12 +29,6 @@ public class UserController {
 
     private final UserDtoFactory userDtoFactory;
 
-    @Autowired
-    public UserController(UserService userService, RoleService roleService, UserDtoFactory userDtoFactory) {
-        this.userService = userService;
-        this.roleService = roleService;
-        this.userDtoFactory = userDtoFactory;
-    }
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {

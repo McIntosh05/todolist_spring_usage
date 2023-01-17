@@ -7,6 +7,7 @@ import com.defatov.todolist_spring_usage.factory.ToDoDtoFactory;
 import com.defatov.todolist_spring_usage.model.ToDo;
 import com.defatov.todolist_spring_usage.service.ToDoService;
 import com.defatov.todolist_spring_usage.service.UserService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("api/users/{user_id}")
+@AllArgsConstructor
 public class ToDoController {
 
     private final ToDoService toDoService;
@@ -29,12 +31,6 @@ public class ToDoController {
 
     private static final String TODO_ID = "/todos/{todo_id}";
 
-    @Autowired
-    public ToDoController(ToDoService toDoService, UserService userService, ToDoDtoFactory toDoDtoFactory) {
-        this.toDoService = toDoService;
-        this.userService = userService;
-        this.toDoDtoFactory = toDoDtoFactory;
-    }
 
     @GetMapping(path = "/todos")
     public ResponseEntity<List<ToDoDto>> getAllTodos(@PathVariable String user_id) {
